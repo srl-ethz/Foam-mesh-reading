@@ -1,9 +1,0 @@
-README.md
-setup.py
-PyFoam2SDF/PyFoam2SDF.py
-PyFoam2SDF/__init__.py
-pyfoam2sdf.egg-info/PKG-INFO
-pyfoam2sdf.egg-info/SOURCES.txt
-pyfoam2sdf.egg-info/dependency_links.txt
-pyfoam2sdf.egg-info/requires.txt
-pyfoam2sdf.egg-info/top_level.txt
