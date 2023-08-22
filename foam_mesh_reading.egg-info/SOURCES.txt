@@ -1,0 +1,5 @@
+setup.py
+foam_mesh_reading.egg-info/PKG-INFO
+foam_mesh_reading.egg-info/SOURCES.txt
+foam_mesh_reading.egg-info/dependency_links.txt
+foam_mesh_reading.egg-info/top_level.txt
