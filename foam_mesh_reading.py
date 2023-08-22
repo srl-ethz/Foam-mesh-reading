@@ -1,7 +1,14 @@
 import re
 import numpy as np
 
-def read_boundary(boundary_file_path):
+def read_boundary(boundary_file_path: str) -> dict:
+    ''' Read boundary data from the foam mesh boundary file, and returns a dictionary storing the boundary data.
+    
+    Args:
+        boundary_file_path (str): Path to the boundary file, usually at constant/polyMesh/boundary
+    Returns:
+        dict: A dictionary storing the boundary data
+    '''
     # Read content from the text file
     with open(boundary_file_path, 'r') as f:
         file_content = f.read()
@@ -28,7 +35,14 @@ def read_boundary(boundary_file_path):
     
     return boundary_data
 
-def faces_to_np(face_file_path):
+def faces_to_np(face_file_path : str) -> np.ndarray:
+    ''' Read face data from the foam mesh face file, and returns a 2D numpy array of shape num_faces x 4, storing the face indices.
+    
+    Args:
+        face_file_path (str): Path to the face file, usually at constant/polyMesh/faces
+    Returns:
+        np.ndarray: A 2D numpy array storing the face indices. Shape: (n_faces, 4)
+    '''
     with open(face_file_path, 'r') as f:
         file_content = f.read()
 
@@ -42,7 +56,14 @@ def faces_to_np(face_file_path):
 
     return data_2d_array
 
-def points_to_np(points_file_path):
+def points_to_np(points_file_path : str) -> np.ndarray:
+    ''' Read points data from the foam mesh points file, and returns a 2D numpy array of shape num_points x 3, storing the point coordinates.
+    
+    Args:
+        points_file_path (str): Path to the points file, usually at <time_step>/polyMesh/points
+    Returns:
+        np.ndarray: A 2D numpy array storing the point coordinates. Shape: (n_points, 3)
+    '''
     # Read the file
     with open(points_file_path, 'r') as f:
         lines = f.readlines()
@@ -70,7 +91,17 @@ def points_to_np(points_file_path):
 
     return points_array
 
-def find_boundary_faces(boundary_file_path, face_file_path, boundary_name):
+def find_boundary_faces(boundary_file_path : str, face_file_path : str, boundary_name : str) -> np.ndarray:
+    ''' Find the faces of a specific boundary patch, and returns a 2D numpy array of shape num_boundary_faces x 4, storing the face indices of the specified boundary patch.
+    
+    Args:
+        boundary_file_path (str): Path to the boundary file, usually at constant/polyMesh/boundary
+        face_file_path (str): Path to the face file, usually at constant/polyMesh/faces
+        boundary_name (str): Name of the boundary patch, e.g. 'inlet', 'outlet', 'top', 'bottom', 'front', 'back'
+        
+    Returns:
+        np.ndarray: A 2D numpy array storing the face indices of the specified boundary patch. Shape: (n_boundary_faces, 4)
+    '''
     # Read boundary data
     boundary_data = read_boundary(boundary_file_path)
 
@@ -85,7 +116,18 @@ def find_boundary_faces(boundary_file_path, face_file_path, boundary_name):
 
     return boundary_faces
 
-def find_boundary_points(boundary_file_path, face_file_path, points_file_path, boundary_name):
+def find_boundary_points(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_name : str) -> np.ndarray:
+    ''' Find the points of a specific boundary patch, and returns a 3D numpy array of shape num_boundary_faces x 4 x 3, storing the point coordinates of the specified boundary patch.
+    
+    Args:
+        boundary_file_path (str): Path to the boundary file, usually at constant/polyMesh/boundary
+        face_file_path (str): Path to the face file, usually at constant/polyMesh/faces
+        points_file_path (str): Path to the points file, usually at <time_step>/polyMesh/points
+        boundary_name (str): Name of the boundary patch, e.g. 'inlet', 'outlet', 'top', 'bottom', 'front', 'back'
+        
+    Returns:
+        np.ndarray: A 2D numpy array storing the point coordinates of the specified boundary patch. Shape: (n_boundary_faces, 4, 3)
+    '''
     # Find the boundary faces
     boundary_faces = find_boundary_faces(boundary_file_path, face_file_path, boundary_name)
 
@@ -95,10 +137,29 @@ def find_boundary_points(boundary_file_path, face_file_path, points_file_path, b
 
     return points_data[boundary_faces]
 
-def quadrilateral_to_triangular(faces):
+def quadrilateral_to_triangular(faces : np.ndarray) -> np.ndarray:
+    ''' Convert the quadrilateral mesh to triangular mesh. Ideally the quadrilateral mesh is the output of `find_boundary_points`. This function will cut a quadrilateral into two triangles, so the number of faces will be doubled.
+    
+    Args:
+        faces (np.ndarray): A 3D numpy array storing the point coordinates of the specified boundary patch. Shape: (n_boundary_faces, 4, 3)
+        
+    Returns:
+        np.ndarray: A 3D numpy array storing the point coordinates of the resulting triangular mesh. Shape: (n_triangular_boundary_faces, 3, 3), where n_triangular_boundary_faces = 2 * n_boundary_faces
+    '''
     return np.concatenate([faces[:,:3,:], faces[:, 1:, :]])
 
-def calculate_sdf(face_points, x_grid, y_grid, z_grid):
+def calculate_sdf(face_points : np.ndarray, x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray:
+    ''' Calculate the signed distance function (SDF) of a boundary patch.
+    
+    Args:
+        face_points (np.ndarray): A 3D numpy array storing the point coordinates of the specified boundary patch, in triangular mesh format. Shape: (n_triangular_boundary_faces, 3, 3)
+        x_grid (np.ndarray): A 1D numpy array storing the x coordinates of the grid points. Usually obtained by np.arange(x_min, x_max, dx)
+        y_grid (np.ndarray): A 1D numpy array storing the y coordinates of the grid points. Usually obtained by np.arange(y_min, y_max, dy)
+        z_grid (np.ndarray): A 1D numpy array storing the z coordinates of the grid points. Usually obtained by np.arange(z_min, z_max, dz), for 2D cases, this can be set to [0.]
+        
+    Returns:
+        np.ndarray: A 3D numpy array storing the SDF values of the grid points. Shape: (n_x, n_y, n_z)
+    '''
     def point_segment_distance(p, v0, v1):
         v = v1 - v0
         w = p - v0
@@ -195,8 +256,22 @@ def calculate_sdf(face_points, x_grid, y_grid, z_grid):
 
     return min_distances.reshape(len(z_grid), len(y_grid), len(x_grid))
 
-def calculate_sdf_from_mesh(boundary_file_path, face_file_path, points_file_path, boundary_names, 
-                            x_grid, y_grid, z_grid):
+def calculate_sdf_from_mesh_files(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_names : list, 
+                                  x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray:
+    ''' Calculates signed distance function from mesh files
+    
+    Args:
+        boundary_file_path (str): Path to the boundary file, usually at constant/polyMesh/boundary
+        face_file_path (str): Path to the face file, usually at constant/polyMesh/faces
+        points_file_path (str): Path to the points file, usually at <time step>/polyMesh/points
+        boundary_names (list): List of boundary names to calculate sdf for
+        x_grid (np.ndarray): A 1D numpy array storing the x coordinates of the grid points. Usually obtained by np.arange(x_min, x_max, dx)
+        y_grid (np.ndarray): A 1D numpy array storing the y coordinates of the grid points. Usually obtained by np.arange(y_min, y_max, dy)
+        z_grid (np.ndarray): A 1D numpy array storing the z coordinates of the grid points. Usually obtained by np.arange(z_min, z_max, dz), for 2D cases, this can be set to [0.]
+        
+    Returns:
+        np.ndarray: A 3D numpy array storing the SDF values of the grid points. Shape: (n_x, n_y, n_z)
+    '''
 
     face_points = []
     for boundary_name in boundary_names:
