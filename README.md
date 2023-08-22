@@ -11,7 +11,9 @@ pip install PyFoam2SDF
 
 ## Documentation
 
-### `read_boundary(boundary_file_path: str) -> dict`
+```python
+read_boundary(boundary_file_path: str) -> dict
+```
 
 Reads boundary data from the foam mesh boundary file and returns a dictionary storing the boundary data.
 
@@ -23,7 +25,9 @@ Reads boundary data from the foam mesh boundary file and returns a dictionary st
 
 - `dict`: A dictionary storing the boundary data.
 
-### `faces_to_np(face_file_path : str) -> np.ndarray`
+```python
+faces_to_np(face_file_path : str) -> np.ndarray
+```
 
 Reads face data from the foam mesh face file and returns a 2D numpy array of shape num_faces x 4, storing the face indices.
 
@@ -35,7 +39,9 @@ Reads face data from the foam mesh face file and returns a 2D numpy array of sha
 
 - `np.ndarray`: A 2D numpy array storing the face indices. Shape: (n_faces, 4)
 
-### `points_to_np(points_file_path : str) -> np.ndarray`
+```python
+points_to_np(points_file_path : str) -> np.ndarray
+```
 
 Reads points data from the foam mesh points file and returns a 2D numpy array of shape num_points x 3, storing the point coordinates.
 
@@ -47,7 +53,9 @@ Reads points data from the foam mesh points file and returns a 2D numpy array of
 
 - `np.ndarray`: A 2D numpy array storing the point coordinates. Shape: (n_points, 3)
 
-### `find_boundary_faces(boundary_file_path : str, face_file_path : str, boundary_name : str) -> np.ndarray`
+```python
+find_boundary_faces(boundary_file_path : str, face_file_path : str, boundary_name : str) -> np.ndarray
+```
 
 Finds the faces of a specific boundary patch and returns a 2D numpy array of shape num_boundary_faces x 4, storing the face indices of the specified boundary patch.
 
@@ -61,7 +69,9 @@ Finds the faces of a specific boundary patch and returns a 2D numpy array of sha
 
 - `np.ndarray`: A 2D numpy array storing the face indices of the specified boundary patch. Shape: (n_boundary_faces, 4)
 
-### `find_boundary_points(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_name : str) -> np.ndarray`
+```python
+find_boundary_points(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_name : str) -> np.ndarray
+```
 
 Finds the points of a specific boundary patch and returns a 3D numpy array of shape num_boundary_faces x 4 x 3, storing the point coordinates of the specified boundary patch.
 
@@ -76,7 +86,9 @@ Finds the points of a specific boundary patch and returns a 3D numpy array of sh
 
 - `np.ndarray`: A 3D numpy array storing the point coordinates of the specified boundary patch. Shape: (n_boundary_faces, 4, 3)
 
-### `quadrilateral_to_triangular(faces : np.ndarray) -> np.ndarray`
+```python
+quadrilateral_to_triangular(faces : np.ndarray) -> np.ndarray
+```
 
 Converts the quadrilateral mesh to a triangular mesh. It cuts a quadrilateral into two triangles, so the number of faces will be doubled.
 
@@ -88,7 +100,9 @@ Converts the quadrilateral mesh to a triangular mesh. It cuts a quadrilateral in
 
 - `np.ndarray`: A 3D numpy array storing the point coordinates of the resulting triangular mesh. Shape: (n_triangular_boundary_faces, 3, 3), where n_triangular_boundary_faces = 2 * n_boundary_faces
 
-### `calculate_sdf(face_points : np.ndarray, x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray`
+```python
+calculate_sdf(face_points : np.ndarray, x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray
+```
 
 Calculates the signed distance function (SDF) of a boundary patch.
 
@@ -103,7 +117,9 @@ Calculates the signed distance function (SDF) of a boundary patch.
 
 - `np.ndarray`: A 3D numpy array storing the SDF values of the grid points. Shape: (n_x, n_y, n_z)
 
-### `calculate_sdf_from_mesh_files(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_names : list, x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray`
+```python
+calculate_sdf_from_mesh_files(boundary_file_path : str, face_file_path : str, points_file_path : str, boundary_names : list, x_grid : np.ndarray, y_grid : np.ndarray, z_grid : np.ndarray) -> np.ndarray
+```
 
 Calculates the signed distance function (SDF) from mesh files for multiple boundary patches.
 
