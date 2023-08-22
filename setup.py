@@ -11,7 +11,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
 
 setup(
     name="pyfoam2sdf",
-    version="1.0.1",
+    version="1.1",
     description="A Python package for converting foamMesh data to Signed Distance Fields (SDF).",
     author="ZHANG Rushan",
     author_email="rzhangbq@gmail.com",

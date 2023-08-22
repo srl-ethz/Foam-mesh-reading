@@ -3,7 +3,7 @@
 This is a simple python package to convert OpenFOAM mesh to SDF. It also facilitates the reading of OpenFOAM mesh files for python.
 The calculation of SDF is based on barycentric coordinate system.
 
-[https://github.com/srl-ethz/Foam-mesh-reading](Github repository)
+[Github Repository](https://github.com/srl-ethz/Foam-mesh-reading)
 
 ## Installation
 
