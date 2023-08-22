@@ -1,4 +1,13 @@
+import codecs
+import os
 from setuptools import setup, find_packages
+
+# these things are needed for the README.md show on pypi (if you dont need delete it)
+here = os.path.abspath(os.path.dirname(__file__))
+
+with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
+    long_description = "\n" + fh.read()
+
 
 setup(
     name="pyfoam2sdf",
@@ -8,6 +17,7 @@ setup(
     author_email="rzhangbq@gmail.com",
     url="https://github.com/srl-ethz/Foam-mesh-reading",
     packages=find_packages(),
+    license='MIT',
     install_requires=[
         "numpy"
     ],
