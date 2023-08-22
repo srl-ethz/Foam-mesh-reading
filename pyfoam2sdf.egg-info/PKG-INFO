@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyfoam2sdf
-Version: 1.0
+Version: 1.0.1
 Summary: A Python package for converting foamMesh data to Signed Distance Fields (SDF).
 Home-page: https://github.com/srl-ethz/Foam-mesh-reading
 Author: ZHANG Rushan
@@ -21,7 +21,7 @@ Classifier: Programming Language :: Python :: 3.9
 This is a simple python package to convert OpenFOAM mesh to SDF. It also facilitates the reading of OpenFOAM mesh files for python.
 The calculation of SDF is based on barycentric coordinate system.
 
-(Github repository)[https://github.com/srl-ethz/Foam-mesh-reading]
+[https://github.com/srl-ethz/Foam-mesh-reading](Github repository)
 
 ## Installation
 
